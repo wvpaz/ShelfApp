@@ -9,10 +9,10 @@ export default class BookShelf extends Component {
     render() {
         return (
             <div className="bookshelf">
-                <h2 className="bookshelf-title">{this.getShelfTitle(this.props.key)}}</h2>
+                <h2 className="bookshelf-title">{this.getShelfTitle(this.props.bookShelfs.key)}}</h2>
                 <div className="bookshelf-books">
                     <ol className="books-grid">
-                        {this.props.values.map((book) => (
+                        {this.props.bookShelfs.values.map((book) => (
                             <li>
                                 <Book title={book.title} author={book.authors[0]} style={{ width: 128, height: 193, backgroundImage: book.imageLinks[0] }} />
                             </li>

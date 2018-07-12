@@ -5,7 +5,7 @@ import './App.css'
 
 class BooksApp extends Component {
   state = {
-    shelfs: null,
+    shelfs: [],
     /**
      * TODO: Instead of using this state variable to keep track of which page
      * we're on, use the URL in the browser's address bar. This will ensure that
@@ -72,7 +72,7 @@ class BooksApp extends Component {
               </div>
               <div className="list-books-content">
                 <div>
-                  {shelfs.map((shelf) => (<BookShelf bookShelf={shelf} />))}
+                  {shelfs.map((shelf) => (<BookShelf bookShelfs={shelf} />))}
                 </div>
               </div>
               <div className="open-search">
