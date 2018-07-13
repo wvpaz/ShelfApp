@@ -72,7 +72,7 @@ class BooksApp extends Component {
               </div>
               <div className="list-books-content">
                 <div>
-                  {shelfs.map((shelf) => (<BookShelf bookShelfs={shelf} />))}
+                  {shelfs.map((shelf, index) => (<BookShelf key={'bs_' + index} bookShelfs={shelf} />))}
                 </div>
               </div>
               <div className="open-search">

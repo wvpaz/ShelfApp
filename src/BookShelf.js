@@ -3,18 +3,19 @@ import Book from "./Book"
 
 export default class BookShelf extends Component {
     getShelfTitle = (key) => {
-        let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) { return str.toUpperCase(); });
+        let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => { return str.toUpperCase(); });
         return title;
     };
+
     render() {
         return (
             <div className="bookshelf">
-                <h2 className="bookshelf-title">{this.getShelfTitle(this.props.bookShelfs.key)}}</h2>
+                <h2 className="bookshelf-title">{this.getShelfTitle(this.props.bookShelfs.key)}</h2>
                 <div className="bookshelf-books">
                     <ol className="books-grid">
                         {this.props.bookShelfs.values.map((book) => (
-                            <li>
-                                <Book title={book.title} author={book.authors[0]} style={{ width: 128, height: 193, backgroundImage: book.imageLinks[0] }} />
+                            <li key={book.id}>
+                                <Book title={book.title} author={book.authors[0]} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }} />
                             </li>
                         ))}
                         {/* <li>
