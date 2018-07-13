@@ -1,11 +1,34 @@
 import React, { Component } from "react"
+import ProtoTypes from "prop-types"
 import Book from "./Book"
 
 export default class BookShelf extends Component {
+    /**
+     * Method: getShelfTitle
+     * Params: key => A keyword of shelf title name
+     * Description: This method returns the shelf title from a shelf keyword
+     */
     getShelfTitle = (key) => {
         let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => { return str.toUpperCase(); });
         return title;
     };
+
+    /**
+     * Method: getBookAuthors
+     * Params: arrAuthors => The array of authors names
+     * Description: This method returns a string of concatenated author names
+     */
+    getBookAuthors = (arrAuthors) => {
+        let authors = "";
+        arrAuthors.map((author) => {
+            if(authors.length == 0)
+                authors += author;
+            else
+                authors += (", " + author);
+        });
+
+        return authors;
+    }
 
     render() {
         return (
@@ -15,18 +38,19 @@ export default class BookShelf extends Component {
                     <ol className="books-grid">
                         {this.props.bookShelfs.values.map((book) => (
                             <li key={book.id}>
-                                <Book title={book.title} author={book.authors[0]} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }} />
+                                <Book title={book.title} author={this.getBookAuthors(book.authors)} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }} />
                             </li>
                         ))}
-                        {/* <li>
-                            <Book title="To Kill a Mockingbird" author="Harper Lee" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }} />
-                        </li>
-                        <li>
-                            <Book title="Ender's Game" author="Orson Scott Card" style={{ width: 128, height: 188, backgroundImage: 'url("http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api")' }} />
-                        </li> */}
                     </ol>
                 </div>
             </div>
         );
     }
+}
+
+BookShelf.protoTypes = {
+    key: ProtoTypes.string.isRequired,
+    title: ProtoTypes.string.isRequired,
+    author: ProtoTypes.string.isRequired,
+    style: ProtoTypes.object
 }

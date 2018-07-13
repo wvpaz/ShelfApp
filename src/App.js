@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from "./BookShelf"
+import PropTypes from "prop-types"
 import './App.css'
 
-class BooksApp extends Component {
+export default class BooksApp extends Component {
   state = {
     shelfs: [],
     /**
@@ -85,4 +86,7 @@ class BooksApp extends Component {
   }
 }
 
-export default BooksApp
+BooksApp.propTypes = {
+  key: PropTypes.string.isRequired,
+  bookShelfs: PropTypes.array
+}
