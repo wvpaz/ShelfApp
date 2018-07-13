@@ -14,6 +14,7 @@ export default class BooksApp extends Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
+    query: ''
   };
 
 
@@ -40,6 +41,10 @@ export default class BooksApp extends Component {
     return shelfs;
   }
 
+  handleChange = (event) => {
+    this.setState({ query: event.target.value });
+  }
+
   render() {
     const shelfs = this.state.shelfs;
 
@@ -58,8 +63,8 @@ export default class BooksApp extends Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author" />
-
+                <input type="text" placeholder="Search by title or author" value={this.state.query} onChange={this.handleChange} />
+                
               </div>
             </div>
             <div className="search-books-results">
