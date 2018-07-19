@@ -13,23 +13,6 @@ export default class BookShelf extends Component {
         return title;
     };
 
-    /**
-     * Method: getBookAuthors
-     * Params: arrAuthors => The array of authors names
-     * Description: This method returns a string of concatenated author names
-     */
-    getBookAuthors = (arrAuthors) => {
-        let authors = "";
-        arrAuthors.map((author) => {
-            if(authors.length == 0)
-                authors += author;
-            else
-                authors += (", " + author);
-        });
-
-        return authors;
-    }
-
     render() {
         return (
             <div className="bookshelf">
@@ -38,7 +21,7 @@ export default class BookShelf extends Component {
                     <ol className="books-grid">
                         {this.props.bookShelfs.values.map((book) => (
                             <li key={book.id}>
-                                <Book title={book.title} author={this.getBookAuthors(book.authors)} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }} />
+                                <Book title={book.title} author={this.props.getBookAuthors(book.authors)} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined && book.imageLinks.smallThumbnail})` }} />
                             </li>
                         ))}
                     </ol>
