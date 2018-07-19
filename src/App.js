@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from "./BookShelf"
+import Book from "./Book"
 import PropTypes from "prop-types"
 import './App.css'
 
 export default class BooksApp extends Component {
   state = {
     shelfs: [],
+    showingBooks: [],
     /**
      * TODO: Instead of using this state variable to keep track of which page
      * we're on, use the URL in the browser's address bar. This will ensure that
@@ -42,11 +44,20 @@ export default class BooksApp extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({ query: event.target.value });
+    this.setState({ 
+      query: event.target.value 
+    });
+  }
+
+  searchBooks = (query) => {
+    BooksAPI.search(query).then((books) => {
+      return books !== undefined ? books :[];
+    });
   }
 
   render() {
     const shelfs = this.state.shelfs;
+    let showingBooks = this.searchBooks(this.state.query);
 
     return (
       <div className="app">
@@ -68,7 +79,13 @@ export default class BooksApp extends Component {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+                {showingBooks.map((book) => (
+                  <li key={book.id}>
+                    <Book title={book.title} author={this.getBookAuthors(book.authors)} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }} />
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
         ) : (
