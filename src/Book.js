@@ -1,17 +1,17 @@
 import React from "react"
 
 function Book(props) {
+    const shelfOptions = ["currentlyReading", "wantToRead", "read", "none"];
     return (
         <div className="book">
             <div className="book-top">
                 <div className="book-cover" style={props.style}></div>
                 <div className="book-shelf-changer">
-                    <select>
+                    <select defaultValue="none" value={props.shelf} onChange={props.updateBook()}>
                         <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReading">Currently Reading</option>
-                        <option value="wantToRead">Want to Read</option>
-                        <option value="read">Read</option>
-                        <option value="none">None</option>
+                        {shelfOptions.map((title, index) => (
+                            <option key={"b_"+index} value={title}>{props.getShelfTitle(title)}</option>
+                        ))}
                     </select>
                 </div>
             </div>

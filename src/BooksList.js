@@ -30,7 +30,13 @@ export default class BooksList extends Component {
                     <ol className="books-grid">
                         {(books !== undefined && books.length > 0) && books.map((book) => (
                             <li key={book.id}>
-                                <Book title={book.title} author={this.props.getBookAuthors(book.authors)} style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined && book.imageLinks.smallThumbnail})` }} />
+                                <Book 
+                                    title={book.title} 
+                                    shelf={book.shelf} 
+                                    author={this.props.getBookAuthors(book.authors)} 
+                                    getShelfTitle={this.props.getShelfTitle} 
+                                    updateBook={this.updateBook} 
+                                    style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined && book.imageLinks.smallThumbnail})` }} />
                             </li>
                         ))}
                     </ol>

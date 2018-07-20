@@ -56,8 +56,22 @@ export default class BooksApp extends Component {
     return authors;
   }
 
+  /**
+     * Method: getShelfTitle
+     * Params: key => A keyword of shelf title name
+     * Description: This method returns the shelf title from a shelf keyword
+     */
+    getShelfTitle = (key) => {
+      let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => { return str.toUpperCase(); });
+      return title;
+  };
+
   searchBooks = (query) => {
     return BooksAPI.search(query);
+  }
+
+  updateBook = (book, shelf) => {
+    BooksAPI.update(book, shelf);
   }
 
   render() {
@@ -72,7 +86,13 @@ export default class BooksApp extends Component {
             </div>
             <div className="list-books-content">
               <div>
-                {shelfs.map((shelf, index) => (<BookShelf key={'bs_' + index} bookShelfs={shelf} getBookAuthors={this.getBookAuthors} />))}
+                {shelfs.map((shelf, index) => (
+                  <BookShelf 
+                    key={'bs_' + index} 
+                    bookShelfs={shelf} 
+                    getBookAuthors={this.getBookAuthors} 
+                    getShelfTitle={this.getShelfTitle}
+                    updateBook={this.updateBook} />))}
               </div>
             </div>
             <div className="open-search">
@@ -81,7 +101,11 @@ export default class BooksApp extends Component {
           </div>
         )} />
         <Route path="/search" render={() => (
-          <BooksList onSearchBooks={this.searchBooks} getBookAuthors={this.getBookAuthors} />
+          <BooksList 
+            onSearchBooks={this.searchBooks} 
+            getBookAuthors={this.getBookAuthors} 
+            getShelfTitle={this.getShelfTitle}
+            updateBook={this.updateBook} />
         )} />
       </div>
     )
