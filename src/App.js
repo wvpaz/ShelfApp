@@ -8,6 +8,7 @@ import './App.css'
 
 export default class BooksApp extends Component {
   state = {
+    books: [],
     shelfs: [],
     query: ''
   };
@@ -15,7 +16,7 @@ export default class BooksApp extends Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      this.setState({ shelfs: this.createBookShelfs(books) })
+      this.setState({ books });
     })
   }
 
@@ -61,21 +62,49 @@ export default class BooksApp extends Component {
      * Params: key => A keyword of shelf title name
      * Description: This method returns the shelf title from a shelf keyword
      */
-    getShelfTitle = (key) => {
-      let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => { return str.toUpperCase(); });
-      return title;
+  getShelfTitle = (key) => {
+    let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => { return str.toUpperCase(); });
+    return title;
   };
 
   searchBooks = (query) => {
     return BooksAPI.search(query);
   }
 
-  updateBook = (book, shelf) => {
-    BooksAPI.update(book, shelf);
+  updateBook = (newBook, newShelf) => {
+    if (newShelf !== undefined && newShelf !== "") {
+      BooksAPI.update(newBook, newShelf).then((bookIds) => {
+        let booksCopy = this.deepCopy(this.state.books);
+        let bookCopy = booksCopy.find((b) => (b.id === newBook.id));
+
+        if (bookCopy === undefined) {
+          bookCopy = this.deepCopy(newBook);
+          booksCopy.push(bookCopy);
+        }
+
+        bookCopy.shelf = newShelf;
+
+        let bookShelfs = [];
+        let shelfKeys = Object.keys(bookIds);
+        shelfKeys.forEach((bookId) => {
+          bookShelfs = bookShelfs.concat(booksCopy.filter((b) => (bookIds[bookId].includes(b.id))))
+        });
+
+        this.setState({ books: this.deepCopy(bookShelfs) });
+      });
+    }
+  }
+
+  deepCopy(obj) {
+    if (obj !== undefined && obj !== null) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    return null;
   }
 
   render() {
-    let shelfs = this.state.shelfs;
+    let shelfs = this.createBookShelfs(this.state.books);
 
     return (
       <div className="app">
@@ -87,10 +116,10 @@ export default class BooksApp extends Component {
             <div className="list-books-content">
               <div>
                 {shelfs.map((shelf, index) => (
-                  <BookShelf 
-                    key={'bs_' + index} 
-                    bookShelfs={shelf} 
-                    getBookAuthors={this.getBookAuthors} 
+                  <BookShelf
+                    key={'bs_' + index}
+                    bookShelfs={shelf}
+                    getBookAuthors={this.getBookAuthors}
                     getShelfTitle={this.getShelfTitle}
                     updateBook={this.updateBook} />))}
               </div>
@@ -101,9 +130,9 @@ export default class BooksApp extends Component {
           </div>
         )} />
         <Route path="/search" render={() => (
-          <BooksList 
-            onSearchBooks={this.searchBooks} 
-            getBookAuthors={this.getBookAuthors} 
+          <BooksList
+            onSearchBooks={this.searchBooks}
+            getBookAuthors={this.getBookAuthors}
             getShelfTitle={this.getShelfTitle}
             updateBook={this.updateBook} />
         )} />

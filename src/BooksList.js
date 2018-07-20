@@ -31,11 +31,13 @@ export default class BooksList extends Component {
                         {(books !== undefined && books.length > 0) && books.map((book) => (
                             <li key={book.id}>
                                 <Book 
-                                    title={book.title} 
-                                    shelf={book.shelf} 
-                                    author={this.props.getBookAuthors(book.authors)} 
+                                    // title={book.title} 
+                                    // shelf={book.shelf} 
+                                    // author={this.props.getBookAuthors(book.authors)} 
+                                    book={book}
+                                    getBookAuthors={this.props.getBookAuthors}
                                     getShelfTitle={this.props.getShelfTitle} 
-                                    updateBook={this.updateBook} 
+                                    updateBook={this.props.updateBook} 
                                     style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined && book.imageLinks.smallThumbnail})` }} />
                             </li>
                         ))}
