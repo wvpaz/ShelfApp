@@ -4,16 +4,20 @@ export default class Book extends Component {
     state = {
         shelfOptions: ["currentlyReading", "wantToRead", "read", "none"],
         shelfName: ''
-    }
+    };
 
     componentDidMount() {
         this.setState({ shelfName: this.props.book.shelf !== undefined ? this.props.book.shelf : "none" });
     }
 
+    /**
+     * @description Method that triggers an event when a book shelf is selected and save a value to each book selected
+     * @param {object} event - Triggered event
+     */
     handleChange = (event) => {
         this.setState({ shelfName: event.target.value });
-        this.props.updateBook(this.props.book, event.target.value);
-    }
+        this.props.onUpdateBook(this.props.book, event.target.value);
+    };
 
     render() {
         return (

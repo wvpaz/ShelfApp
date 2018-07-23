@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import ProtoTypes from "prop-types"
 import Book from "./Book"
 
@@ -14,7 +14,7 @@ function BookShelf(props) {
                                 book={book}
                                 getBookAuthors={props.getBookAuthors}
                                 getShelfTitle={props.getShelfTitle}
-                                updateBook={props.updateBook}
+                                onUpdateBook={props.onUpdateBook}
                                 style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined && book.imageLinks.smallThumbnail})` }} />
                         </li>
                     ))}
@@ -28,7 +28,8 @@ export default BookShelf
 
 BookShelf.protoTypes = {
     key: ProtoTypes.string.isRequired,
-    title: ProtoTypes.string.isRequired,
-    author: ProtoTypes.string.isRequired,
+    getBookAuthors: ProtoTypes.func,
+    getShelfTitle: ProtoTypes.func,
+    onUpdateBook: ProtoTypes.func,
     style: ProtoTypes.object
 }

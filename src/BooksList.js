@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Book from './Book'
+import ProtoTypes from "prop-types"
 import { Link } from 'react-router-dom'
 
 export default class BooksList extends Component {
@@ -8,15 +9,19 @@ export default class BooksList extends Component {
         books: []
     };
 
+    /**
+     * @description Method that triggers an event when a character is typed, save the input value and search a book passing the value typed
+     * @param {object} event - Triggered event
+     */
     handleChange = (query) => {
-        this.setState({query});
+        this.setState({ query });
         this.props.onSearchBooks(query).then((books) => {
-            this.setState({books})
+            this.setState({ books })
         })
-    }
+    };
 
     render() {
-        const {query, books} = this.state;
+        const { query, books } = this.state;
 
         return (
             <div className="search-books">
@@ -30,14 +35,11 @@ export default class BooksList extends Component {
                     <ol className="books-grid">
                         {(books !== undefined && books.length > 0) && books.map((book) => (
                             <li key={book.id}>
-                                <Book 
-                                    // title={book.title} 
-                                    // shelf={book.shelf} 
-                                    // author={this.props.getBookAuthors(book.authors)} 
+                                <Book
                                     book={book}
                                     getBookAuthors={this.props.getBookAuthors}
-                                    getShelfTitle={this.props.getShelfTitle} 
-                                    updateBook={this.props.updateBook} 
+                                    getShelfTitle={this.props.getShelfTitle}
+                                    onUpdateBook={this.props.onUpdateBook}
                                     style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined && book.imageLinks.smallThumbnail})` }} />
                             </li>
                         ))}
@@ -46,4 +48,12 @@ export default class BooksList extends Component {
             </div>
         );
     }
+}
+
+BooksList.protoTypes = {
+    book: ProtoTypes.object,
+    getBookAuthors: ProtoTypes.func,
+    getShelfTitle: ProtoTypes.func,
+    onUpdateBook: ProtoTypes.func,
+    style: ProtoTypes.object
 }

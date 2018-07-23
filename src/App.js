@@ -20,6 +20,11 @@ export default class BooksApp extends Component {
     })
   }
 
+  /**
+   * @description It's a method that organize all books in yours respective shelfs
+   * @param {...object} books - All books returned by getAll() method from BooksAPI
+   * @returns {...object} Shelfs with books
+   */
   createBookShelfs = (books) => {
     let shelfs = [];
 
@@ -38,19 +43,21 @@ export default class BooksApp extends Component {
   }
 
   /**
-     * Method: getBookAuthors
-     * Params: arrAuthors => The array of authors names
-     * Description: This method returns a string of concatenated author names
-     */
+   * @description It's a method that concat all authors name inside authors array
+   * @param {...string} authors - Author's name array of a book
+   * @returns {string} All authors name concatenated
+   */
   getBookAuthors = (arrAuthors) => {
     let authors = "";
 
     if (arrAuthors !== undefined && arrAuthors !== null && arrAuthors.length > 0) {
       arrAuthors.map((author) => {
-        if (authors.length === 0)
+        if (authors.length === 0) {
           authors += author;
-        else
+        }
+        else {
           authors += (", " + author);
+        }
       });
     }
 
@@ -58,19 +65,29 @@ export default class BooksApp extends Component {
   }
 
   /**
-     * Method: getShelfTitle
-     * Params: key => A keyword of shelf title name
-     * Description: This method returns the shelf title from a shelf keyword
-     */
+   * @description This method parses a camel case shelf key name to a shelf name with spaces (e.g. wantToRead ==> Want To Read)
+   * @param {string} key - Shelf's key name
+   * @returns {string} Shelf's key name with spaces
+   */
   getShelfTitle = (key) => {
     let title = key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => { return str.toUpperCase(); });
     return title;
   };
 
+  /**
+   * @description Method that search books passing a query
+   * @param {string} query - Part of a book or author name
+   * @returns {string} Promise with a list of books found
+   */
   searchBooks = (query) => {
     return BooksAPI.search(query);
-  }
+  };
 
+  /**
+   * @description This method updates the book's shelf
+   * @param {object} newBook - Object containing a book that will be changed from shelf
+   * @param {string} newShelf - The shelf's key name
+   */
   updateBook = (newBook, newShelf) => {
     if (newShelf !== undefined && newShelf !== "") {
       BooksAPI.update(newBook, newShelf).then((bookIds) => {
@@ -93,8 +110,13 @@ export default class BooksApp extends Component {
         this.setState({ books: this.deepCopy(bookShelfs) });
       });
     }
-  }
+  };
 
+  /**
+   * @description This realize an object copy
+   * @param {string} obj - Object that will be copied
+   * @return {object} Returns a new object copied from original object
+   */
   deepCopy(obj) {
     if (obj !== undefined && obj !== null) {
       return JSON.parse(JSON.stringify(obj));
@@ -121,7 +143,7 @@ export default class BooksApp extends Component {
                     bookShelfs={shelf}
                     getBookAuthors={this.getBookAuthors}
                     getShelfTitle={this.getShelfTitle}
-                    updateBook={this.updateBook} />))}
+                    onUpdateBook={this.updateBook} />))}
               </div>
             </div>
             <div className="open-search">
@@ -134,7 +156,7 @@ export default class BooksApp extends Component {
             onSearchBooks={this.searchBooks}
             getBookAuthors={this.getBookAuthors}
             getShelfTitle={this.getShelfTitle}
-            updateBook={this.updateBook} />
+            onUpdateBook={this.updateBook} />
         )} />
       </div>
     )
@@ -142,7 +164,10 @@ export default class BooksApp extends Component {
 }
 
 BooksApp.propTypes = {
-  key: PropTypes.string,
+  key: PropTypes.string.isRequired,
   bookShelfs: PropTypes.array,
-  onSearchBooks: PropTypes.func
+  onSearchBooks: PropTypes.func,
+  getBookAuthors: PropTypes.func,
+  getShelfTitle: PropTypes.func,
+  onUpdateBook: PropTypes.func
 }
