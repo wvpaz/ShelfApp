@@ -15,6 +15,9 @@ export default class BooksList extends Component {
      */
     handleChange = (query) => {
         this.setState({ query });
+        // this.setState({ books: this.props.onSearchBooks(query) });
+
+        // var x = 5;
         this.props.onSearchBooks(query).then((books) => {
             this.setState({ books })
         })

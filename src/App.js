@@ -28,7 +28,7 @@ export default class BooksApp extends Component {
   createBookShelfs = (books) => {
     let shelfs = [];
 
-    books.map((book) => {
+    books.forEach((book) => {
       let index = shelfs.map((obj) => { return obj.key }).indexOf(book.shelf);
 
       if (index >= 0) {
@@ -51,7 +51,7 @@ export default class BooksApp extends Component {
     let authors = "";
 
     if (arrAuthors !== undefined && arrAuthors !== null && arrAuthors.length > 0) {
-      arrAuthors.map((author) => {
+      arrAuthors.forEach((author) => {
         if (authors.length === 0) {
           authors += author;
         }
@@ -80,7 +80,18 @@ export default class BooksApp extends Component {
    * @returns {string} Promise with a list of books found
    */
   searchBooks = (query) => {
-    return BooksAPI.search(query);
+    return BooksAPI.search(query).then((books) => {
+      if (books !== undefined && books.length > 0) {
+        this.state.books.forEach(element => {
+          let aux = books.filter((b) => b.id === element.id);
+
+          if (aux.length > 0) {
+            aux[0].shelf = element.shelf;
+          }
+        });
+        return books;
+      }
+    });
   };
 
   /**
